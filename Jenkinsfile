@@ -24,12 +24,22 @@ pipeline {
             }
         }
 
-        stage('Análisis de Seguridad con Bandit') {
+       stage('Análisis de Seguridad con Bandit') {
             steps {
-                bat 'bandit -r . > reporte_bandit.txt'
-                bat 'type reporte_bandit.txt'
+                script {
+                    def status = bat(script: 'bandit -r . > reporte_bandit.txt', returnStatus: true)
+                    bat 'type reporte_bandit.txt'
+                    if (status != 0) {
+                        echo "⚠ Bandit encontró posibles vulnerabilidades. Revisa el reporte."
+                        // Puedes marcar aquí el build como inestable si quieres:
+                        // currentBuild.result = 'UNSTABLE'
+                    } else {
+                        echo "✅ Análisis de Bandit finalizado sin problemas."
+                    }
+                }
             }
         }
+
 
 
         stage('Construir') {
