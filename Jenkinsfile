@@ -24,6 +24,14 @@ pipeline {
             }
         }
 
+        stage('Análisis de Seguridad con Bandit') {
+            steps {
+                bat 'bandit -r . > reporte_bandit.txt'
+                bat 'type reporte_bandit.txt'
+            }
+        }
+
+
         stage('Construir') {
             steps {
                 echo 'Construyendo el proyecto...'
