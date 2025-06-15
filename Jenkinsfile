@@ -11,18 +11,18 @@ pipeline {
 
         stage('Verificar cambios') {
             steps {
+                bat 'git fetch'
                 script {
-                    def cambios = bat(script: "git diff --name-only %GIT_PREVIOUS_COMMIT% %GIT_COMMIT%", returnStdout: true).trim()
+                    def cambios = bat(script: "git diff --name-only origin/main", returnStdout: true).trim()
                     if (cambios) {
-                        echo "⚠ Se detectaron cambios en los siguientes archivos:"
+                        echo "⚠ Se detectaron cambios respecto a origin/main:"
                         echo cambios
                     } else {
-                        echo "✅ No hay cambios desde la última ejecución."
+                        echo "✅ No hay cambios respecto a origin/main."
                     }
                 }
             }
         }
-
 
         stage('Construir') {
             steps {
