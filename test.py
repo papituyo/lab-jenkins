@@ -1,4 +1,4 @@
 import subprocess
 
 def vulnerable():
-    subprocess.call("ls", shell=True)
+    subprocess.call("ls", shell=False)
