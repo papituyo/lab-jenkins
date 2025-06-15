@@ -12,7 +12,7 @@ pipeline {
         stage('Verificar cambios') {
             steps {
                 script {
-                    def cambios = sh(script: "git diff --name-only $GIT_PREVIOUS_COMMIT $GIT_COMMIT", returnStdout: true).trim()
+                    def cambios = bat(script: "git diff --name-only %GIT_PREVIOUS_COMMIT% %GIT_COMMIT%", returnStdout: true).trim()
                     if (cambios) {
                         echo "⚠ Se detectaron cambios en los siguientes archivos:"
                         echo cambios
@@ -22,6 +22,7 @@ pipeline {
                 }
             }
         }
+
 
         stage('Construir') {
             steps {
